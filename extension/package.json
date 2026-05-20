@@ -1,0 +1,21 @@
+{
+  "name": "anime-dub-extension",
+  "version": "0.1.0",
+  "description": "AI dub browser extension for anime streaming services",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.0-beta.26",
+    "@types/chrome": "^0.0.270",
+    "typescript": "^5.6.0",
+    "vite": "^5.4.0"
+  }
+}

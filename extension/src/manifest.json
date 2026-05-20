@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Anime AI Dub",
+  "version": "0.1.0",
+  "description": "AI-generated voice-over for subtitled anime",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": [
+    "https://www.crunchyroll.com/*",
+    "https://*.crunchyrollcdn.com/*",
+    "http://localhost:8000/*"
+  ],
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.crunchyroll.com/watch/*"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.crunchyroll.com/watch/*"],
+      "js": ["src/content/page-injector.ts"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_title": "Anime AI Dub"
+  },
+  "icons": {}
+}

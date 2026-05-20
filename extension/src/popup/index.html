@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Anime AI Dub</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        width: 380px;
+        margin: 0;
+        padding: 16px;
+        color: #1a1a1a;
+      }
+      h1 {
+        font-size: 16px;
+        margin: 0 0 12px;
+      }
+      h2 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #555;
+        margin: 18px 0 8px;
+      }
+      .row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      label {
+        font-size: 12px;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      select,
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        box-sizing: border-box;
+      }
+      input[type="password"] {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+      }
+      .hint {
+        font-size: 11px;
+        color: #888;
+        line-height: 1.4;
+      }
+      .saved {
+        font-size: 11px;
+        color: #2a8;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .saved.show {
+        opacity: 1;
+      }
+      .speakers {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 6px 8px;
+        align-items: center;
+      }
+      .speakers .name {
+        font-size: 13px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .speakers select {
+        font-size: 12px;
+        padding: 4px 6px;
+      }
+      .empty {
+        font-size: 12px;
+        color: #888;
+        font-style: italic;
+      }
+      .btn-row {
+        display: flex;
+        gap: 8px;
+      }
+      button {
+        flex: 1;
+        padding: 7px 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background: #fafafa;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #f0f0f0;
+      }
+      button.primary {
+        background: #ff6600;
+        color: white;
+        border-color: #ff6600;
+      }
+      button.primary:hover {
+        background: #e65c00;
+      }
+      .preset-msg {
+        font-size: 12px;
+        line-height: 1.4;
+        padding: 8px 10px;
+        border-radius: 6px;
+        margin-top: 8px;
+        display: none;
+      }
+      .preset-msg.show {
+        display: block;
+      }
+      .preset-msg.info {
+        background: #f0f6ff;
+        color: #144;
+        border: 1px solid #cde2ff;
+      }
+      .preset-msg.warn {
+        background: #fff7e6;
+        color: #5a3a00;
+        border: 1px solid #ffd591;
+      }
+      .preset-msg.error {
+        background: #fff0f0;
+        color: #6a1212;
+        border: 1px solid #ffc7c7;
+      }
+      .community {
+        padding: 10px 12px;
+        border: 1px solid #ffd591;
+        background: #fffaf0;
+        border-radius: 8px;
+        margin-bottom: 14px;
+        font-size: 12px;
+      }
+      .community .heading {
+        font-weight: 600;
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
+      .community ul {
+        list-style: none;
+        margin: 0 0 8px;
+        padding: 0;
+      }
+      .community li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        gap: 8px;
+      }
+      .community .meta {
+        color: #666;
+        font-size: 11px;
+      }
+      .community button {
+        flex: none;
+        padding: 4px 10px;
+        font-size: 12px;
+      }
+      .community .dismiss {
+        font-size: 11px;
+        color: #888;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 2px 0;
+      }
+      .community input.search {
+        width: 100%;
+        padding: 5px 8px;
+        margin: 6px 0 8px;
+        border: 1px solid #e6c98a;
+        border-radius: 6px;
+        font-size: 12px;
+        box-sizing: border-box;
+        background: white;
+      }
+      .community .no-match {
+        color: #888;
+        font-style: italic;
+        padding: 6px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Anime AI Dub</h1>
+    <div id="community" class="community" style="display: none"></div>
+    <div class="row">
+      <label for="provider">Voice provider</label>
+      <select id="provider">
+        <option value="say">macOS say (dev)</option>
+        <option value="elevenlabs">ElevenLabs (high quality)</option>
+        <option value="auto">Auto (prefer ElevenLabs)</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="elevenLabsKey">ElevenLabs API key</label>
+      <input id="elevenLabsKey" type="password" placeholder="sk_..." autocomplete="off" />
+      <div class="hint">Stored locally in this browser only.</div>
+      <div class="saved" id="saved">Saved.</div>
+    </div>
+
+    <h2>Characters in current episode</h2>
+    <div id="speakers" class="speakers"></div>
+    <div id="speakersEmpty" class="empty" style="display: none">
+      No characters yet. Open a Crunchyroll watch page and press play.
+    </div>
+
+    <h2>Voice preset</h2>
+    <div class="row">
+      <label for="presetName">Preset name</label>
+      <input id="presetName" type="text" placeholder="e.g. The Beginning After the End" />
+    </div>
+    <div class="btn-row">
+      <button id="exportBtn">Export</button>
+      <button id="importBtn">Import</button>
+      <button id="uploadBtn" class="primary">Share to community</button>
+    </div>
+    <input id="importFile" type="file" accept=".json,application/json" style="display: none" />
+    <div id="presetMsg" class="preset-msg"></div>
+    <div class="hint" style="margin-top: 8px">
+      Export saves your overrides as a JSON file. Import loads someone else's file. Share uploads
+      yours to the community library for this show's slug.
+    </div>
+
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
