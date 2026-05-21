@@ -6,7 +6,7 @@ Everything you'll need to paste into the [Chrome Web Store Developer Dashboard](
 
 - [ ] Pay $5 one-time developer registration fee at https://chrome.google.com/webstore/devconsole
 - [ ] Production build: `npm run build --prefix extension` → produces `extension/dist/`
-- [ ] Zip the build: `cd extension && zip -r ../dubzly-v0.1.1.zip dist/` (the zip itself, not the dist folder)
+- [ ] Zip the build: `cd extension/dist && zip -r ../../dubzly-v0.1.2.zip .` (the zip itself, not the dist folder)
 - [ ] Take 1-5 screenshots (1280×800 PNG, see "Screenshots" section below)
 - [ ] Have privacy policy URL ready: `https://dubzly.com/privacy.html`
 
@@ -82,7 +82,12 @@ Required to fetch the subtitle file (e.g. closed-caption-*.vtt or subtitle-*.ass
 
 ### Host permission `https://api.dubzly.com/*`
 ```
-Required to send each subtitle cue to Dubzly's text-to-speech backend, which forwards it to ElevenLabs (using the user-supplied API key passed in an X-Elevenlabs-Key header per request) and returns the generated audio. Same backend hosts the optional community preset library.
+Required to send each subtitle cue to Dubzly's text-to-speech backend, which forwards it to ElevenLabs (using the user-supplied API key passed in an X-Elevenlabs-Key header per request) and returns the generated audio.
+```
+
+### Host permission `https://black.wiki/*`
+```
+Required for the optional community preset library. The extension reads public preset files (GET https://black.wiki/api/apps/dubzly/files and /data/<filename>) so the popup can suggest community-shared per-character voice mappings for the show the user is watching. When a user opts to share their own preset, the extension POSTs to https://black.wiki/api/apps/dubzly/submit with the user-supplied black.wiki API token. No personal data is sent to black.wiki without the user clicking "Share to community".
 ```
 
 ### MAIN-world content script

@@ -2,13 +2,14 @@
   "manifest_version": 3,
   "name": "Dubzly — AI dub for subtitled anime",
   "short_name": "Dubzly",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Mutes the original audio on Crunchyroll and reads every line of dialogue aloud with a distinct AI voice per character.",
   "permissions": ["storage", "activeTab"],
   "host_permissions": [
     "https://www.crunchyroll.com/*",
     "https://*.crunchyrollcdn.com/*",
-    "https://api.dubzly.com/*"
+    "https://api.dubzly.com/*",
+    "https://black.wiki/*"
   ],
   "background": {
     "service_worker": "src/background/index.ts",

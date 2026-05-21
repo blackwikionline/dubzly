@@ -3,12 +3,14 @@ export type Provider = "elevenlabs" | "say" | "auto";
 export interface Settings {
   provider: Provider;
   elevenLabsApiKey: string;
+  bwikiToken: string;
   voiceOverrides: Record<string, string>;
 }
 
 const DEFAULTS: Settings = {
   provider: "say",
   elevenLabsApiKey: "",
+  bwikiToken: "",
   voiceOverrides: {},
 };
 

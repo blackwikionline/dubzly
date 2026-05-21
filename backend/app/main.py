@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
-from app.routes import cues, presets, voices
+from app.routes import cues, voices
 
 settings = get_settings()
 
@@ -20,7 +20,6 @@ app.add_middleware(
 
 app.include_router(cues.router)
 app.include_router(voices.router)
-app.include_router(presets.router)
 
 
 @app.get("/health")

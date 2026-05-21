@@ -26,6 +26,7 @@ import { ELEVENLABS_VOICES, MUTE_VOICE_ID, SAY_VOICES, type Voice } from "../lib
 
 const providerSelect = document.getElementById("provider") as HTMLSelectElement;
 const keyInput = document.getElementById("elevenLabsKey") as HTMLInputElement;
+const bwikiInput = document.getElementById("bwikiToken") as HTMLInputElement;
 const savedFlag = document.getElementById("saved") as HTMLDivElement;
 const speakersEl = document.getElementById("speakers") as HTMLDivElement;
 const speakersEmptyEl = document.getElementById("speakersEmpty") as HTMLDivElement;
@@ -127,7 +128,7 @@ function clearCommunityBanner(): void {
   communityEl.innerHTML = "";
 }
 
-function presetRow(slug: string, p: CommunityPresetSummary): HTMLLIElement {
+function presetRow(_slug: string, p: CommunityPresetSummary): HTMLLIElement {
   const li = document.createElement("li");
   const info = document.createElement("div");
   const name = document.createElement("div");
@@ -137,9 +138,6 @@ function presetRow(slug: string, p: CommunityPresetSummary): HTMLLIElement {
   const parts: string[] = [];
   if (p.author) parts.push(`by ${p.author}`);
   parts.push(`${p.speakerCount} ${p.speakerCount === 1 ? "voice" : "voices"}`);
-  if (typeof p.downloads === "number") {
-    parts.push(`${p.downloads} ${p.downloads === 1 ? "load" : "loads"}`);
-  }
   if (p.provider) parts.push(p.provider);
   meta.textContent = parts.join(" · ");
   info.appendChild(name);
@@ -148,7 +146,7 @@ function presetRow(slug: string, p: CommunityPresetSummary): HTMLLIElement {
   const loadBtn = document.createElement("button");
   loadBtn.textContent = "Load";
   loadBtn.addEventListener("click", () => {
-    void onLoadCommunityPreset(slug, p.id);
+    void onLoadCommunityPreset(p.url);
   });
 
   li.appendChild(info);
@@ -259,11 +257,11 @@ function renderCommunityBanner(
   communityEl.appendChild(dismiss);
 }
 
-async function onLoadCommunityPreset(slug: string, id: string): Promise<void> {
+async function onLoadCommunityPreset(url: string): Promise<void> {
   clearPresetMsg();
   let preset: Preset;
   try {
-    const raw = await fetchCommunityPreset(slug, id);
+    const raw = await fetchCommunityPreset(url);
     preset = parsePreset(raw);
   } catch (e) {
     showPresetMsg(`Could not load community preset: ${(e as Error).message}`, "error");
@@ -295,6 +293,7 @@ async function refresh(): Promise<void> {
   const [settings, speakers] = await Promise.all([getSettings(), getCurrentSpeakers()]);
   providerSelect.value = settings.provider;
   keyInput.value = settings.elevenLabsApiKey;
+  bwikiInput.value = settings.bwikiToken;
   const pool = await loadVoicePool(settings.provider, settings.elevenLabsApiKey);
   renderSpeakers(speakers?.speakers ?? [], settings, pool);
   if (!presetNameInput.value && speakers?.showSlug) {
@@ -390,6 +389,13 @@ async function onUploadCommunity(): Promise<void> {
     showPresetMsg("Pick voices for at least one character first.", "warn");
     return;
   }
+  if (!settings.bwikiToken) {
+    showPresetMsg(
+      "black.wiki API token required to share. Paste one in the field above. Get one at black.wiki/account/tokens",
+      "warn",
+    );
+    return;
+  }
   const name = presetNameInput.value.trim() || slugToTitle(speakers.showSlug);
   const author = window.prompt(
     `Share "${name}" for "${speakers.showSlug}" to the community library?\n\nOptional: your name (leave blank to stay anonymous)`,
@@ -400,18 +406,18 @@ async function onUploadCommunity(): Promise<void> {
     return;
   }
   try {
-    const res = await uploadCommunityPreset({
+    await uploadCommunityPreset({
       slug: speakers.showSlug,
       name,
       provider: settings.provider,
       voiceOverrides: settings.voiceOverrides,
       author: author.trim() || undefined,
+      bwikiToken: settings.bwikiToken,
     });
     showPresetMsg(
-      `Shared as community preset ${res.id}. Other viewers of "${speakers.showSlug}" will see it.`,
+      `Submitted "${name}" for review. The black.wiki app owner approves submissions; once approved it will appear for other "${speakers.showSlug}" viewers.`,
       "info",
     );
-    void loadCommunityPresets(speakers.showSlug);
   } catch (e) {
     showPresetMsg(`Upload failed: ${(e as Error).message}`, "error");
   }
@@ -432,6 +438,14 @@ keyInput.addEventListener("input", () => {
       flashSaved();
       void refresh();
     });
+  }, 400);
+});
+
+let bwikiDebounce: number | undefined;
+bwikiInput.addEventListener("input", () => {
+  if (bwikiDebounce) window.clearTimeout(bwikiDebounce);
+  bwikiDebounce = window.setTimeout(() => {
+    void setSettings({ bwikiToken: bwikiInput.value.trim() }).then(flashSaved);
   }, 400);
 });
 

@@ -130,12 +130,16 @@
       <h2>3. Community preset uploads (opt-in only)</h2>
       <p>
         If you click "Share to community" in the popup, dubzly uploads your current per-character
-        voice mapping (a small JSON document) to the community preset library on our backend,
-        keyed by the show's URL slug. This is entirely optional. The uploaded preset contains
+        voice mapping (a small JSON document) to the community preset library on
+        <a href="https://black.wiki" target="_blank" rel="noopener">black.wiki</a>, a separate
+        service used by dubzly only for community-shared assets. Uploads require a personal
+        black.wiki API token that you generate at
+        <a href="https://black.wiki/account/tokens" target="_blank" rel="noopener">black.wiki/account/tokens</a>
+        and paste into the dubzly popup. This is entirely optional. The uploaded preset contains
         only:
       </p>
       <ul>
-        <li>The show slug (e.g. <code>a-replica-never-dreams</code>)</li>
+        <li>The show slug (e.g. <code>a-replica-never-dreams</code>) embedded in the filename</li>
         <li>A preset name (provided by you in the popup)</li>
         <li>Your chosen author name, if you typed one (otherwise anonymous)</li>
         <li>The mapping of character name to voice ID</li>
@@ -143,8 +147,12 @@
         <li>A timestamp</li>
       </ul>
       <p>
-        Uploaded presets are publicly listed at <code>api.dubzly.com/presets?slug=&lt;show&gt;</code>
-        so other dubzly viewers of the same show can find them.
+        Uploaded presets are submitted for review by the black.wiki app owner before becoming
+        publicly visible. Once approved they appear at
+        <code>black.wiki/api/apps/dubzly/files</code> and the matching show's community banner
+        in the dubzly popup. See
+        <a href="https://black.wiki/privacy" target="_blank" rel="noopener">black.wiki's privacy policy</a>
+        for how that service handles uploaded files.
       </p>
 
       <h2>4. Data on Crunchyroll itself</h2>
@@ -174,6 +182,11 @@
           <strong>Cloudflare</strong>: DNS for <code>dubzly.com</code> is hosted on Cloudflare.
           Subject to
           <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.
+        </li>
+        <li>
+          <strong>black.wiki</strong>: community preset uploads (opt-in) are stored on black.wiki,
+          which uses Supabase + AWS Amplify Hosting. Subject to
+          <a href="https://black.wiki/privacy" target="_blank" rel="noopener">black.wiki's privacy policy</a>.
         </li>
       </ul>
 
