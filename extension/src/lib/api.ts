@@ -16,7 +16,7 @@ export interface RenderOptions {
   elevenLabsApiKey?: string;
 }
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://api.dubzly.com";
 
 export async function fetchVoices(
   provider: "elevenlabs" | "say",

@@ -7,6 +7,7 @@
   "host_permissions": [
     "https://www.crunchyroll.com/*",
     "https://*.crunchyrollcdn.com/*",
+    "https://api.dubzly.com/*",
     "http://localhost:8000/*"
   ],
   "background": {
