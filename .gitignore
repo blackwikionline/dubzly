@@ -28,3 +28,8 @@ extension/dist/
 # Secrets
 .env.local
 .env.*.local
+
+# Build artifacts (not source)
+/dubzly-v*.zip
+/128.png
+/dubzly.com.txt
