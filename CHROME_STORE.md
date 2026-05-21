@@ -8,7 +8,7 @@ Everything you'll need to paste into the [Chrome Web Store Developer Dashboard](
 - [ ] Production build: `npm run build --prefix extension` → produces `extension/dist/`
 - [ ] Zip the build: `cd extension && zip -r ../dubzly-v0.1.1.zip dist/` (the zip itself, not the dist folder)
 - [ ] Take 1-5 screenshots (1280×800 PNG, see "Screenshots" section below)
-- [ ] Have privacy policy URL ready: `https://dubzly.com/privacy`
+- [ ] Have privacy policy URL ready: `https://dubzly.com/privacy.html`
 
 ## Listing fields
 
@@ -39,7 +39,7 @@ Key features:
 ✦ Works on both VTT and ASS subtitle formats.
 ✦ Open source — github.com/blackwikionline/dubzly
 
-Privacy: settings are stored locally in your browser. Subtitle text is sent to the Dubzly backend only to render audio. Your ElevenLabs key is passed through per request; it is never stored server-side. See https://dubzly.com/privacy for full details.
+Privacy: settings are stored locally in your browser. Subtitle text is sent to the Dubzly backend only to render audio. Your ElevenLabs key is passed through per request; it is never stored server-side. See https://dubzly.com/privacy.html for full details.
 
 Not affiliated with or endorsed by Crunchyroll, LLC.
 ```
@@ -114,7 +114,7 @@ For each of the above, when the form asks how the data is used, select:
 
 ### Privacy policy URL
 ```
-https://dubzly.com/privacy
+https://dubzly.com/privacy.html
 ```
 
 ### Data deletion / contact
