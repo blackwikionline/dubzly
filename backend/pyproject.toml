@@ -2,7 +2,7 @@
 name = "anime-dub-backend"
 version = "0.1.0"
 description = "Backend for AI anime dubbing browser extension"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
@@ -32,7 +32,7 @@ packages = ["app"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]
