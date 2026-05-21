@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Anime AI Dub",
-  "version": "0.1.0",
-  "description": "AI-generated voice-over for subtitled anime",
+  "name": "Dubzly — AI dub for subtitled anime",
+  "short_name": "Dubzly",
+  "version": "0.1.1",
+  "description": "Mutes the original audio on Crunchyroll and reads every line of dialogue aloud with a distinct AI voice per character.",
   "permissions": ["storage", "activeTab"],
   "host_permissions": [
     "https://www.crunchyroll.com/*",
     "https://*.crunchyrollcdn.com/*",
-    "https://api.dubzly.com/*",
-    "http://localhost:8000/*"
+    "https://api.dubzly.com/*"
   ],
   "background": {
     "service_worker": "src/background/index.ts",
@@ -29,7 +29,19 @@
   ],
   "action": {
     "default_popup": "src/popup/index.html",
-    "default_title": "Anime AI Dub"
+    "default_title": "Dubzly",
+    "default_icon": {
+      "16": "src/icons/icon-16.png",
+      "32": "src/icons/icon-32.png",
+      "48": "src/icons/icon-48.png",
+      "128": "src/icons/icon-128.png"
+    }
   },
-  "icons": {}
+  "icons": {
+    "16": "src/icons/icon-16.png",
+    "32": "src/icons/icon-32.png",
+    "48": "src/icons/icon-48.png",
+    "128": "src/icons/icon-128.png"
+  },
+  "homepage_url": "https://dubzly.com"
 }

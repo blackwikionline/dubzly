@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy — dubzly</title>
+    <meta name="description" content="Privacy policy for the dubzly Chrome extension and dubzly.com." />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      .legal {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 40px 48px 80px;
+      }
+      .legal h1 {
+        font-family: "Fredoka", "Inter", sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        margin: 0 0 8px;
+      }
+      .legal .updated {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0 0 32px;
+      }
+      .legal h2 {
+        font-family: "Fredoka", "Inter", sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        margin: 36px 0 10px;
+      }
+      .legal p,
+      .legal li {
+        font-size: 15px;
+        line-height: 1.65;
+        color: var(--text);
+      }
+      .legal ul {
+        padding-left: 22px;
+      }
+      .legal code {
+        font-size: 13px;
+      }
+      .legal a {
+        color: var(--coral);
+        text-decoration: underline;
+      }
+      @media (max-width: 720px) {
+        .legal {
+          padding: 30px 24px 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <a href="/" class="brand"><img src="/logo-sm.png" alt="dubzly" /></a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a class="ghost" href="https://github.com/blackwikionline/dubzly" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="legal">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: May 20, 2026</p>
+
+      <p>
+        This policy describes what data the dubzly Chrome extension and the
+        <code>dubzly.com</code> / <code>api.dubzly.com</code> services handle, why, and how long
+        we keep it. We try to keep it short and honest.
+      </p>
+
+      <h2>What dubzly does</h2>
+      <p>
+        Dubzly is a browser extension that reads subtitle text from a streaming page (currently
+        Crunchyroll), sends each subtitle line to a text-to-speech service, and plays the resulting
+        audio in sync with the video. You can either bring your own ElevenLabs API key or use the
+        browser's built-in speech synthesis.
+      </p>
+
+      <h2>Data we handle</h2>
+
+      <h2>1. Settings stored locally in your browser</h2>
+      <p>The extension uses <code>chrome.storage.local</code> on your device to remember:</p>
+      <ul>
+        <li>Your voice provider preference (ElevenLabs / browser TTS / auto)</li>
+        <li>Your ElevenLabs API key, if you pasted one in the popup</li>
+        <li>Your per-character voice overrides for shows you've configured</li>
+        <li>The most recent show's slug and detected character list (used to populate the popup UI)</li>
+      </ul>
+      <p>
+        These never leave your browser unless you explicitly ask them to (e.g. exporting a preset
+        JSON file, or uploading a preset to the community library).
+      </p>
+
+      <h2>2. Data sent to our backend (api.dubzly.com)</h2>
+      <p>
+        When the extension needs to render audio for a subtitle line, it sends the following to
+        <code>api.dubzly.com</code> over HTTPS:
+      </p>
+      <ul>
+        <li>The subtitle text for that line (e.g. <code>"Good job, you guys."</code>)</li>
+        <li>The speaker name from the subtitle file (e.g. <code>"Aki"</code>)</li>
+        <li>The voice ID and provider preference for that cue</li>
+        <li>The episode ID from the page URL (e.g. <code>GE00367923JAJP</code>)</li>
+        <li>
+          Your ElevenLabs API key, if configured — passed through as an
+          <code>X-Elevenlabs-Key</code> header so our backend can relay the request to ElevenLabs.
+          We do not store this key server-side.
+        </li>
+      </ul>
+      <p>
+        The backend forwards the text + voice configuration to ElevenLabs (or generates audio
+        locally if you've selected browser TTS), and returns the audio to your browser. Audio
+        bytes are not retained beyond the lifetime of that HTTP response unless you have opted
+        in to a caching feature.
+      </p>
+
+      <h2>3. Community preset uploads (opt-in only)</h2>
+      <p>
+        If you click "Share to community" in the popup, dubzly uploads your current per-character
+        voice mapping (a small JSON document) to the community preset library on our backend,
+        keyed by the show's URL slug. This is entirely optional. The uploaded preset contains
+        only:
+      </p>
+      <ul>
+        <li>The show slug (e.g. <code>a-replica-never-dreams</code>)</li>
+        <li>A preset name (provided by you in the popup)</li>
+        <li>Your chosen author name, if you typed one (otherwise anonymous)</li>
+        <li>The mapping of character name to voice ID</li>
+        <li>The selected provider (<code>elevenlabs</code> or <code>say</code>)</li>
+        <li>A timestamp</li>
+      </ul>
+      <p>
+        Uploaded presets are publicly listed at <code>api.dubzly.com/presets?slug=&lt;show&gt;</code>
+        so other dubzly viewers of the same show can find them.
+      </p>
+
+      <h2>4. Data on Crunchyroll itself</h2>
+      <p>
+        The extension reads the subtitle stream the player has already loaded for you and reads
+        the value of the video element's current-time / play state to schedule audio. It does
+        not modify, capture, or transmit the video stream itself, your Crunchyroll account
+        credentials, your watch history, or any other Crunchyroll content. It also mutes the
+        original audio while active, so the page's audio output comes only from dubzly's
+        synthesized voices.
+      </p>
+
+      <h2>5. Third parties</h2>
+      <ul>
+        <li>
+          <strong>ElevenLabs</strong>: if you bring your own API key, subtitle text is sent to
+          ElevenLabs for synthesis. Subject to
+          <a href="https://elevenlabs.io/privacy" target="_blank" rel="noopener">ElevenLabs's privacy policy</a>.
+        </li>
+        <li>
+          <strong>AWS</strong>: <code>api.dubzly.com</code> runs on AWS App Runner; static assets
+          for <code>dubzly.com</code> are served from AWS S3 + CloudFront. AWS may log standard
+          request metadata (IP, timestamps, user agent) per their
+          <a href="https://aws.amazon.com/privacy/" target="_blank" rel="noopener">privacy policy</a>.
+        </li>
+        <li>
+          <strong>Cloudflare</strong>: DNS for <code>dubzly.com</code> is hosted on Cloudflare.
+          Subject to
+          <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.
+        </li>
+      </ul>
+
+      <h2>What we don't do</h2>
+      <ul>
+        <li>We don't sell or share your data.</li>
+        <li>We don't use analytics, ads, or third-party tracking pixels.</li>
+        <li>We don't require a user account to use the extension.</li>
+        <li>We don't read or modify any Crunchyroll page beyond what's needed to play the dub.</li>
+        <li>We don't store ElevenLabs API keys server-side.</li>
+        <li>We don't transmit your data to anyone other than the third parties listed above.</li>
+      </ul>
+
+      <h2>Data retention</h2>
+      <ul>
+        <li>Local settings (extension storage): retained until you uninstall the extension or clear browser data.</li>
+        <li>
+          Rendered audio in transit: not retained server-side beyond serving the HTTP response,
+          unless we explicitly cache it (currently we do not).
+        </li>
+        <li>
+          Community preset uploads: retained until you (the uploader) or a site admin removes them.
+        </li>
+        <li>Standard AWS / Cloudflare request logs: per provider defaults (typically 30-90 days).</li>
+      </ul>
+
+      <h2>Children's privacy</h2>
+      <p>
+        Dubzly is not directed at children under 13 and we do not knowingly collect data from them.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        We'll update this policy when behavior changes and bump the "last updated" date at the
+        top. Material changes will also be noted in the extension's GitHub release notes.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions or requests: open an issue at
+        <a href="https://github.com/blackwikionline/dubzly" target="_blank" rel="noopener">github.com/blackwikionline/dubzly</a>.
+      </p>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="/logo-sm.png" alt="" />
+          <span>dubzly</span>
+        </div>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="https://github.com/blackwikionline/dubzly" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <p class="footer-fineprint">Open source · Not affiliated with Crunchyroll.</p>
+    </footer>
+  </body>
+</html>
