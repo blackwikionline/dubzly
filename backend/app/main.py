@@ -15,7 +15,14 @@ app.add_middleware(
     allow_credentials=bool(allowed_origins),
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["X-Episode-Id", "X-Cue-Index", "X-Cue-Start", "X-Cue-End", "X-Provider"],
+    expose_headers=[
+        "X-Episode-Id",
+        "X-Cue-Index",
+        "X-Cue-Start",
+        "X-Cue-End",
+        "X-Provider",
+        "X-Cache",
+    ],
 )
 
 app.include_router(cues.router)

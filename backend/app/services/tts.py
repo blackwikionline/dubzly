@@ -9,6 +9,7 @@ from typing import Literal
 import httpx
 
 from app.config import get_settings
+from app.services.cache import cache_key, get_cached, put_cached
 from app.services.voices import pick_elevenlabs_voice, pick_say_voice
 
 ELEVENLABS_TTS_URL = "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
@@ -26,6 +27,7 @@ class RenderedAudio:
     data: bytes
     content_type: str
     provider: str
+    cache_hit: bool = False
 
 
 def _silent_wav(duration_seconds: float) -> bytes:
@@ -75,18 +77,7 @@ async def _macos_say_wav(text: str, voice: str | None = None) -> bytes | None:
                 os.unlink(p)
 
 
-async def _elevenlabs(
-    text: str,
-    api_key_override: str | None = None,
-    speaker: str | None = None,
-    voice_id_override: str | None = None,
-) -> RenderedAudio | None:
-    settings = get_settings()
-    api_key = api_key_override or settings.elevenlabs_api_key
-    default_voice = settings.elevenlabs_default_voice_id or "21m00Tcm4TlvDq8ikWAM"
-    voice_id = voice_id_override or pick_elevenlabs_voice(speaker, default=default_voice)
-    if not api_key:
-        return None
+async def _elevenlabs_call(text: str, api_key: str, voice_id: str) -> RenderedAudio:
     url = ELEVENLABS_TTS_URL.format(voice_id=voice_id)
     headers = {"xi-api-key": api_key, "accept": "audio/mpeg"}
     payload = {
@@ -100,6 +91,14 @@ async def _elevenlabs(
         return RenderedAudio(data=resp.content, content_type="audio/mpeg", provider="elevenlabs")
 
 
+async def _from_cache(digest: str) -> RenderedAudio | None:
+    cached = await get_cached(digest)
+    if cached is None:
+        return None
+    data, content_type, provider = cached
+    return RenderedAudio(data=data, content_type=content_type, provider=provider, cache_hit=True)
+
+
 async def render_cue(
     text: str,
     duration_seconds: float,
@@ -108,24 +107,44 @@ async def render_cue(
     speaker: str | None = None,
     voice_id_override: str | None = None,
 ) -> RenderedAudio:
+    settings = get_settings()
+
+    # ----- ElevenLabs path -----
     if provider in ("elevenlabs", "auto"):
-        eleven = await _elevenlabs(
-            text,
-            api_key_override=elevenlabs_api_key_override,
-            speaker=speaker,
-            voice_id_override=voice_id_override,
-        )
-        if eleven is not None:
-            return eleven
+        api_key = elevenlabs_api_key_override or settings.elevenlabs_api_key
+        if api_key:
+            default_voice = settings.elevenlabs_default_voice_id or "21m00Tcm4TlvDq8ikWAM"
+            voice_id = voice_id_override or pick_elevenlabs_voice(speaker, default=default_voice)
+            digest = cache_key(text, voice_id, ELEVENLABS_MODEL_ID, "elevenlabs")
+
+            hit = await _from_cache(digest)
+            if hit is not None:
+                return hit
+
+            rendered = await _elevenlabs_call(text, api_key, voice_id)
+            await put_cached(digest, rendered.data, rendered.content_type, rendered.provider)
+            return rendered
+
         if provider == "elevenlabs":
             raise RuntimeError("ElevenLabs requested but no API key configured")
 
+    # ----- macOS `say` path (dev only — no `say` binary in production container) -----
     if provider in ("say", "auto"):
-        say_voice = voice_id_override or pick_say_voice(speaker)
-        say = await _macos_say_wav(text, voice=say_voice)
-        if say is not None:
-            return RenderedAudio(data=say, content_type="audio/wav", provider="say")
+        say_voice = voice_id_override or pick_say_voice(speaker) or ""
+        digest = cache_key(text, say_voice, "say", "say")
+        hit = await _from_cache(digest)
+        if hit is not None:
+            return hit
 
+        say_bytes = await _macos_say_wav(text, voice=say_voice or None)
+        if say_bytes is not None:
+            rendered = RenderedAudio(data=say_bytes, content_type="audio/wav", provider="say")
+            await put_cached(digest, rendered.data, rendered.content_type, rendered.provider)
+            return rendered
+
+    # ----- silent fallback (not cached — cheap to generate) -----
     return RenderedAudio(
-        data=_silent_wav(duration_seconds), content_type="audio/wav", provider="silent",
+        data=_silent_wav(duration_seconds),
+        content_type="audio/wav",
+        provider="silent",
     )

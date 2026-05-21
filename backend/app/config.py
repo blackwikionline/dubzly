@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     r2_bucket: str = "anime-dub-audio"
     r2_public_url: str = ""
 
+    s3_audio_cache_bucket: str = ""
+
 
 @lru_cache
 def get_settings() -> Settings:

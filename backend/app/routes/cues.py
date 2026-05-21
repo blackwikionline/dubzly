@@ -47,5 +47,6 @@ async def render(
             "X-Cue-Start": str(req.start),
             "X-Cue-End": str(req.end),
             "X-Provider": audio.provider,
+            "X-Cache": "HIT" if audio.cache_hit else "MISS",
         },
     )
