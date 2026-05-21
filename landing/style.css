@@ -65,7 +65,13 @@ code {
 .container {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 0 28px;
+  padding: 0 48px;
+}
+
+@media (max-width: 720px) {
+  .container {
+    padding: 0 24px;
+  }
 }
 
 /* nav */
@@ -75,11 +81,17 @@ code {
   z-index: 10;
   max-width: var(--max);
   margin: 0 auto;
-  padding: 18px 28px;
+  padding: 22px 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+
+@media (max-width: 720px) {
+  .nav {
+    padding: 18px 24px;
+  }
 }
 
 .brand img {
@@ -140,9 +152,15 @@ code {
 .hero {
   position: relative;
   text-align: center;
-  padding: 30px 28px 80px;
+  padding: 40px 48px 90px;
   max-width: var(--max);
   margin: 0 auto;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    padding: 24px 24px 64px;
+  }
 }
 
 .hero-deco {
@@ -448,8 +466,8 @@ section h2 {
 .step {
   background: white;
   border: 2px solid var(--border);
-  border-radius: 18px;
-  padding: 28px 24px;
+  border-radius: 20px;
+  padding: 36px 32px;
   box-shadow: var(--shadow-chunky);
   text-align: left;
   transition: transform 0.15s;
@@ -529,8 +547,8 @@ section h2 {
 .preset-mock {
   background: white;
   border: 2px solid var(--border);
-  border-radius: 18px;
-  padding: 22px 24px;
+  border-radius: 20px;
+  padding: 28px 32px;
   box-shadow: var(--shadow-chunky);
 }
 
@@ -601,12 +619,18 @@ section h2 {
 .install-card {
   background: white;
   border: 2px solid var(--border);
-  border-radius: 18px;
-  padding: 24px 28px 12px;
+  border-radius: 20px;
+  padding: 32px 40px 18px;
   box-shadow: var(--shadow-chunky);
   max-width: 760px;
   margin: 30px auto 0;
   text-align: left;
+}
+
+@media (max-width: 720px) {
+  .install-card {
+    padding: 24px 24px 12px;
+  }
 }
 
 .install-card ol {
@@ -652,8 +676,14 @@ section h2 {
 footer {
   background: var(--text);
   color: white;
-  padding: 36px 28px;
+  padding: 40px 48px;
   text-align: center;
+}
+
+@media (max-width: 720px) {
+  footer {
+    padding: 32px 24px;
+  }
 }
 
 .footer-inner {
