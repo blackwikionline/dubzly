@@ -6,28 +6,35 @@
     <title>dubzly — AI voice dubs for subtitled anime</title>
     <meta
       name="description"
-      content="A Chrome extension that overlays AI-generated voices on subtitled anime in real time. Per-character voice mapping, community presets, your own ElevenLabs key."
+      content="A Chrome extension that overlays AI-generated voices on subtitled anime in real time. Per-character voices, community presets, your own ElevenLabs key."
     />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#0a0a0f" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#fffaf0" />
     <meta property="og:title" content="dubzly — AI voice dubs for subtitled anime" />
     <meta
       property="og:description"
-      content="Mute the original audio, hear AI-generated voices read the subtitles. Per-character voice mapping, community-shared presets, all in your browser."
+      content="Mute the original audio, hear AI-generated voices read the subtitles. Per-character voices, community-shared presets, all in your browser."
     />
-    <meta property="og:image" content="/og.png" />
+    <meta property="og:image" content="/logo.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
+    <div class="bg-sparkles" aria-hidden="true"></div>
+
     <header class="nav">
       <a href="/" class="brand">
-        <img src="/logo.svg" alt="" width="32" height="32" />
-        <span>dubzly</span>
+        <img src="/logo-sm.png" alt="dubzly" width="44" height="44" />
       </a>
       <nav class="nav-links">
         <a href="#how">How it works</a>
-        <a href="#presets">Community presets</a>
+        <a href="#presets">Presets</a>
         <a
           class="ghost"
           href="https://github.com/blackwikionline/dubzly"
@@ -35,76 +42,69 @@
           rel="noopener"
           >GitHub</a
         >
-        <a class="cta" href="#install">Get the extension</a>
+        <a class="cta" href="#install">Get it</a>
       </nav>
     </header>
 
     <main>
       <section class="hero">
-        <div class="hero-text">
-          <h1>
-            Hear the subs.<br />
-            <span class="accent">Per-character AI voices for subtitled anime.</span>
-          </h1>
-          <p class="lede">
-            dubzly is a Chrome extension that mutes the original audio and overlays an AI voice for
-            every line of dialogue — a different voice per character, in sync with the video.
-          </p>
-          <div class="hero-cta">
-            <a class="cta primary" href="#install">Install for Chrome</a>
-            <a class="cta ghost" href="#how">How it works</a>
-          </div>
-          <p class="fineprint">
-            Open source · Bring your own ElevenLabs key · Works on Crunchyroll today
-          </p>
+        <img src="/logo.png" alt="dubzly" class="hero-logo" width="520" height="520" />
+        <h1>Auto-dubbed anime, right in your browser.</h1>
+        <p class="lede">
+          Watch subtitled shows on Crunchyroll while AI voices read every line out loud — a
+          <span class="pill pill-purple">different voice</span> for every
+          <span class="pill pill-blue">character</span>, perfectly
+          <span class="pill pill-coral">in sync</span> with the video.
+        </p>
+        <div class="hero-cta">
+          <a class="cta primary" href="#install">Install for Chrome</a>
+          <a class="cta ghost" href="#how">How it works</a>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="player">
-            <div class="player-bar"></div>
-            <div class="cue cue-1"><span class="speaker">Aki</span>Unbelievable. She likes to cut it close.</div>
-            <div class="cue cue-2"><span class="speaker">Joe</span>Tell me you've got a plan.</div>
-            <div class="cue cue-3"><span class="speaker">Yashiro</span>I always have a plan.</div>
-          </div>
-        </div>
+        <p class="fineprint">
+          Open source · Bring your own ElevenLabs key · Works on Crunchyroll today
+        </p>
       </section>
 
       <section id="how" class="how">
         <h2>How it works</h2>
         <div class="steps">
-          <div class="step">
+          <div class="step step-purple">
             <div class="step-num">1</div>
-            <h3>Captures the subtitle track</h3>
+            <h3>Catches the subs</h3>
             <p>
-              dubzly intercepts the subtitle file the player already fetches — every cue, every
-              speaker name, with proper start/end timing. Works for both .vtt and .ass shows.
+              dubzly intercepts the subtitle track the player already loads — every cue, every
+              speaker name, with proper timing. Works on both <code>.vtt</code> and <code>.ass</code> shows.
             </p>
           </div>
-          <div class="step">
+          <div class="step step-blue">
             <div class="step-num">2</div>
             <h3>Voices each character</h3>
             <p>
-              Each speaker name maps to a distinct voice. ElevenLabs for production quality, or the
-              browser's built-in TTS for free. Pick voices per character, save and share presets.
+              Aki gets one voice, Joe gets another. Pick voices per character from the popup,
+              save the mapping, share it. ElevenLabs for quality or your browser's TTS for free.
             </p>
           </div>
-          <div class="step">
+          <div class="step step-coral">
             <div class="step-num">3</div>
             <h3>Plays in sync</h3>
             <p>
-              The original audio is muted; the dub plays through your speakers, scheduled against
-              the video's playhead. Pause, seek, and rate changes all behave correctly.
+              Original audio muted, dub plays through your speakers, scheduled against the video's
+              playhead. Pause, seek, rate changes — all behave correctly.
             </p>
           </div>
         </div>
       </section>
 
       <section id="presets" class="presets">
-        <h2>Community voice presets</h2>
-        <p class="section-lede">
-          Voice-matching every character in a show takes effort. Once you've done it, export the
-          preset as JSON and share with friends — or upload to the community library, keyed by the
-          show's URL slug. Other viewers see your preset suggested automatically.
-        </p>
+        <div class="presets-text">
+          <span class="pixel-eyebrow">community presets</span>
+          <h2>Don't voice-match every show alone.</h2>
+          <p class="section-lede">
+            Once you've picked voices for a show, export the preset as JSON and share it. Or upload
+            it to the community library — keyed by the show's URL slug, so other dubzly viewers
+            see it suggested automatically when they open the same show.
+          </p>
+        </div>
         <div class="preset-mock">
           <div class="preset-mock-head">
             <strong>3 community presets for "A Replica Never Dreams"</strong>
@@ -114,21 +114,21 @@
               <div>Sunao voice canon</div>
               <small>by alice · 11 voices · 247 loads</small>
             </div>
-            <button>Load</button>
+            <button class="btn-purple">Load</button>
           </div>
           <div class="preset-mock-row">
             <div>
               <div>Punchy dub</div>
               <small>by bob · 9 voices · 84 loads</small>
             </div>
-            <button>Load</button>
+            <button class="btn-blue">Load</button>
           </div>
           <div class="preset-mock-row">
             <div>
               <div>Quiet vibe</div>
               <small>by kelvin · 11 voices · 12 loads</small>
             </div>
-            <button>Load</button>
+            <button class="btn-coral">Load</button>
           </div>
         </div>
       </section>
@@ -139,22 +139,25 @@
           dubzly is in early access. Until it's on the Chrome Web Store, you can load it unpacked
           from the GitHub repo.
         </p>
-        <div class="install-steps">
+        <div class="install-card">
           <ol>
             <li>
-              Clone or download the repo:
+              <span class="step-tag">clone</span>
               <code>git clone https://github.com/blackwikionline/dubzly</code>
             </li>
             <li>
-              Build the extension: <code>cd dubzly/extension && npm install && npm run build</code>
+              <span class="step-tag">build</span>
+              <code>cd dubzly/extension &amp;&amp; npm install &amp;&amp; npm run build</code>
             </li>
             <li>
-              Chrome → <code>chrome://extensions</code> → enable Developer mode → Load unpacked →
-              pick the <code>extension/dist</code> folder
+              <span class="step-tag">load</span>
+              Chrome → <code>chrome://extensions</code> → enable Developer mode →
+              Load unpacked → pick <code>extension/dist</code>
             </li>
             <li>
-              Open the popup, paste your ElevenLabs API key (or skip and use the browser's built-in
-              TTS), open any Crunchyroll episode, press play.
+              <span class="step-tag">watch</span>
+              Open any Crunchyroll episode, paste your ElevenLabs key in the popup
+              (or skip it for free browser TTS), press play.
             </li>
           </ol>
         </div>
@@ -163,8 +166,8 @@
 
     <footer>
       <div class="footer-inner">
-        <div>
-          <img src="/logo.svg" alt="" width="24" height="24" />
+        <div class="footer-brand">
+          <img src="/logo-sm.png" alt="" width="32" height="32" />
           <span>dubzly</span>
         </div>
         <div class="footer-links">
@@ -173,7 +176,7 @@
         </div>
       </div>
       <p class="footer-fineprint">
-        Open source · Not affiliated with Crunchyroll · Voice quality varies by provider.
+        Open source · Not affiliated with Crunchyroll · Anime shows. Subtitled. Auto dubbed.
       </p>
     </footer>
   </body>
