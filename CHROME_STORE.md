@@ -6,7 +6,7 @@ Everything you'll need to paste into the [Chrome Web Store Developer Dashboard](
 
 - [ ] Pay $5 one-time developer registration fee at https://chrome.google.com/webstore/devconsole
 - [ ] Production build: `npm run build --prefix extension` → produces `extension/dist/`
-- [ ] Zip the build: `cd extension/dist && zip -r ../../dubzly-v0.1.2.zip .` (the zip itself, not the dist folder)
+- [ ] Zip the build: `cd extension/dist && zip -r ../../dubzly-v0.1.3.zip .` (the zip itself, not the dist folder)
 - [ ] Take 1-5 screenshots (1280×800 PNG, see "Screenshots" section below)
 - [ ] Have privacy policy URL ready: `https://dubzly.com/privacy.html`
 
@@ -62,12 +62,7 @@ The dashboard asks you to justify each permission inline. Use these:
 
 ### `storage`
 ```
-Stores user preferences (voice provider choice, optional ElevenLabs API key, per-character voice overrides, preset name) locally on the user's device via chrome.storage.local. Settings persist across browser restarts and never leave the device unless the user explicitly exports or uploads a preset.
-```
-
-### `activeTab`
-```
-Lets the popup UI know which Crunchyroll tab is active so it can display the character list and voice overrides for the show the user is currently watching.
+Stores user preferences (voice provider choice, optional ElevenLabs API key, optional black.wiki API token, per-character voice overrides, preset name) locally on the user's device via chrome.storage.local. Settings persist across browser restarts and never leave the device unless the user explicitly exports or uploads a preset.
 ```
 
 ### Host permission `https://www.crunchyroll.com/*`
